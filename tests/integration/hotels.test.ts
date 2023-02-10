@@ -12,6 +12,7 @@ import {
   createTicket,
   createPayment,
   generateCreditCardData,
+  createTicketTypeWithHotel,
 } from "../factories";
 import { cleanDb, generateValidToken } from "../helpers";
 
@@ -54,12 +55,12 @@ describe("GET /hotels", () => {
       const user = await createUser();
       const token = await generateValidToken();
       const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType();
+      const ticketType = await createTicketTypeWithHotel();
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.RESERVED);
       const payment = await createPayment(ticket.id, ticketType.price);
 
       const TestHotel = await  prisma.hotel.create({
-        date: {
+        data: {
           name: "Hotel Teste",
           image: "https://dsdsds.jpg"
         }
@@ -72,8 +73,8 @@ describe("GET /hotels", () => {
           id: TestHotel.id,
           name: TestHotel.name,
           image: TestHotel.image,
-          createdAt: TestHotel.createdAt.toISOstring(),
-          updatedAt: TestHotel.updatedAt.toISOstring()
+          createdAt: TestHotel.createdAt.toISOString(),
+          updatedAt: TestHotel.updatedAt.toISOString()
         }
       ]);
     });
